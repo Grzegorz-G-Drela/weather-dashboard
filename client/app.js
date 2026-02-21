@@ -1,17 +1,20 @@
-
-
 const searchButton = document.querySelector('#search-button');
 const cityInput = document.querySelector('#city-input');
 const errorDiv = document.querySelector('#searchbar-bottom > .error-div');
 
-searchButton.addEventListener ('click', citySearch);
+searchButton.addEventListener ('click', () => {
+  fetchWeather();
+  fetchForecast();
+});
+
 
 cityInput.value = 'Wellington';
-citySearch();
+fetchWeather();
+fetchForecast();
 cityInput.value = '';
 
 
-function citySearch(){
+function fetchWeather(){
   input = cityInput.value;
 
   fetch(`http://localhost:3000/weather?city=${input}`)
@@ -37,3 +40,13 @@ function citySearch(){
   });
 }
 
+function fetchForecast() {
+  input = cityInput.value;
+
+  fetch(`http://localhost:3000/forecast?city=${input}`)
+  .then(response => response.json())
+  .then(data => {
+    const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
+    console.log(daily);
+  });
+}
