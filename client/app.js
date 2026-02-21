@@ -28,13 +28,13 @@ function fetchWeather(){
     } else {
       console.log(data);
       errorDiv.textContent = '';
-      const cityName = document.querySelector('.city-name');
+      const cityName = document.querySelector('#current-weather > .city-name');
       cityName.textContent = data.name;
-      const temperature = document.querySelector('.temperature');
-      temperature.textContent = Math.round(data.main.temp);
-      const windSpeed = document.querySelector('.wind-speed');
+      const temperature = document.querySelector('#current-weather > .temperature');
+      temperature.textContent = Math.round(data.main.temp) + '\u2103';
+      const windSpeed = document.querySelector('#current-weather > .wind-speed');
       windSpeed.textContent = data.wind.speed;
-      const icon = document.querySelector ('.icon');
+      const icon = document.querySelector ('#current-weather > .icon');
       icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     }
   });
@@ -46,7 +46,41 @@ function fetchForecast() {
   fetch(`http://localhost:3000/forecast?city=${input}`)
   .then(response => response.json())
   .then(data => {
+    while (fiveDayForecast.firstChild){
+      fiveDayForecast.removeChild(fiveDayForecast.firstChild);
+    }
     const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
     console.log(daily);
+    daily.forEach((day) => displayForecast(day));
   });
+}
+
+const fiveDayForecast = document.querySelector('#five-day-forecast');
+
+
+function displayForecast(day) {
+  // console.log(day);
+  const date = document.createElement('h3');
+  const div = document.createElement('div');
+  const temperature = document.createElement('h1');
+  const windSpeed = document.createElement('p');
+  const icon = document.createElement('img');
+  
+  div.append(date);
+  div.append(temperature);
+  div.append(windSpeed);
+  div.append(icon);
+  fiveDayForecast.append(div);
+
+  div.classList.add('weather');
+  date.classList.add('city-name');
+  temperature.classList.add('temperature');
+  windSpeed.classList.add('wind-speed');
+  icon.classList.add('icon');
+
+  date.textContent = day.dt_txt.slice(0, 10);
+  temperature.textContent = Math.round(day.main.temp) + '\u2103';
+  windSpeed.textContent = day.wind.speed;
+  icon.src = `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`;
+  icon.alt = 'the weather icon';
 }
