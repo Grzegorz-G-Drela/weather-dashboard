@@ -2,11 +2,19 @@ const searchButton = document.querySelector('#search-button');
 const cityInput = document.querySelector('#city-input');
 const errorDiv = document.querySelector('#searchbar-bottom > .error-div');
 
+// cityInput.addEventListener('keydown', fetchWeather);
+
+cityInput.addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    fetchWeather();
+    cityInput.value = '';
+  }
+});
+
 searchButton.addEventListener ('click', () => {
   fetchWeather();
   fetchForecast();
 });
-
 
 cityInput.value = 'Wellington';
 fetchWeather();
@@ -15,7 +23,7 @@ cityInput.value = '';
 
 
 function fetchWeather(){
-  input = cityInput.value;
+  const input = cityInput.value;
 
   fetch(`http://localhost:3000/weather?city=${input}`)
   .then(response => response.json())
@@ -36,12 +44,27 @@ function fetchWeather(){
       windSpeed.textContent = data.wind.speed;
       const icon = document.querySelector ('#current-weather > .icon');
       icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
+      let searches = JSON.parse(localStorage.getItem('searches'));
+      searches = searches || [];
+
+      const cityExists = searches.find(item => item.city === input); 
+      if(cityExists) {
+        cityExists.count ++;
+      } else {
+        searches.push({city: input, count: 1});
+      }
+
+      console.log(searches);
+      localStorage.setItem('searches', JSON.stringify(searches));
     }
   });
 }
 
+
+
 function fetchForecast() {
-  input = cityInput.value;
+  const input = cityInput.value;
 
   fetch(`http://localhost:3000/forecast?city=${input}`)
   .then(response => response.json())
