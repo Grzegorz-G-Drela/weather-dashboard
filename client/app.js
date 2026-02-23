@@ -2,8 +2,7 @@ const searchButton = document.querySelector('#search-button');
 const cityInput = document.querySelector('#city-input');
 const errorDiv = document.querySelector('#searchbar-bottom > .error-div');
 const favCities = document.querySelector('#fav-cities');
-
-// cityInput.addEventListener('keydown', fetchWeather);
+const fiveDayForecast = document.querySelector('#five-day-forecast');
 
 cityInput.addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
@@ -23,6 +22,8 @@ fetchWeather();
 fetchForecast();
 cityInput.value = '';
 
+// fetches weather from API to then create HTML element with the weather details (main card)
+// it makes sure the city name exists in API database, than saves it in localStorage to display favourites 
 
 function fetchWeather(){
   const input = cityInput.value;
@@ -36,8 +37,6 @@ function fetchWeather(){
 
       return;
     } else {
-      console.log(data);
-      console.log(data.name, data.sys.country)
       errorDiv.textContent = '';
       const cityName = document.querySelector('#current-weather > .city-name');
       cityName.textContent = data.name;
@@ -66,7 +65,8 @@ function fetchWeather(){
   });
 }
 
-
+// fetches the 5 day forecast and pick only one entry for each day for 12:00 noon (from 8 entries/day, for every 3h)
+// then calls for displayForecast function to transfer the data into 'div' elements
 
 function fetchForecast() {
   const input = cityInput.value;
@@ -83,11 +83,7 @@ function fetchForecast() {
   });
 }
 
-const fiveDayForecast = document.querySelector('#five-day-forecast');
-
-
 function displayForecast(day) {
-  // console.log(day);
   const date = document.createElement('h3');
   const div = document.createElement('div');
   const temperature = document.createElement('h1');
@@ -117,10 +113,10 @@ function renderFavourites () {
   let searches = JSON.parse(localStorage.getItem('searches'));
   searches = searches || [];
   const sorted = searches.sort((a, b) => b.count - a.count);
-  fiveMostSearched = sorted.slice(0, 5);
+  const fiveMostSearched = sorted.slice(0, 5);
   favCities.replaceChildren();
   fiveMostSearched.forEach(city => {
-    cityButton = document.createElement('button');
+    const cityButton = document.createElement('button');
     cityButton.textContent = city.city;
     favCities.appendChild(cityButton);
   });
