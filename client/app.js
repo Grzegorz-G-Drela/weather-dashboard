@@ -1,12 +1,14 @@
 const searchButton = document.querySelector('#search-button');
 const cityInput = document.querySelector('#city-input');
 const errorDiv = document.querySelector('#searchbar-bottom > .error-div');
+const favCities = document.querySelector('#fav-cities');
 
 // cityInput.addEventListener('keydown', fetchWeather);
 
 cityInput.addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
     fetchWeather();
+    fetchForecast();
     cityInput.value = '';
   }
 });
@@ -35,6 +37,7 @@ function fetchWeather(){
       return;
     } else {
       console.log(data);
+      console.log(data.name, data.sys.country)
       errorDiv.textContent = '';
       const cityName = document.querySelector('#current-weather > .city-name');
       cityName.textContent = data.name;
@@ -57,6 +60,8 @@ function fetchWeather(){
 
       console.log(searches);
       localStorage.setItem('searches', JSON.stringify(searches));
+
+      renderFavourites();
     }
   });
 }
@@ -69,9 +74,9 @@ function fetchForecast() {
   fetch(`http://localhost:3000/forecast?city=${input}`)
   .then(response => response.json())
   .then(data => {
-    while (fiveDayForecast.firstChild){
-      fiveDayForecast.removeChild(fiveDayForecast.firstChild);
-    }
+    fiveDayForecast.replaceChildren();
+    if(data.cod === '404') return; 
+ 
     const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
     console.log(daily);
     daily.forEach((day) => displayForecast(day));
@@ -106,4 +111,17 @@ function displayForecast(day) {
   windSpeed.textContent = day.wind.speed;
   icon.src = `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`;
   icon.alt = 'the weather icon';
+}
+
+function renderFavourites () {
+  let searches = JSON.parse(localStorage.getItem('searches'));
+  searches = searches || [];
+  const sorted = searches.sort((a, b) => b.count - a.count);
+  fiveMostSearched = sorted.slice(0, 5);
+  favCities.replaceChildren();
+  fiveMostSearched.forEach(city => {
+    cityButton = document.createElement('button');
+    cityButton.textContent = city.city;
+    favCities.appendChild(cityButton);
+  });
 }
