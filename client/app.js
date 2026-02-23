@@ -119,5 +119,10 @@ function renderFavourites () {
     const cityButton = document.createElement('button');
     cityButton.textContent = city.city;
     favCities.appendChild(cityButton);
+    cityButton.addEventListener('click', () => {
+      cityInput.value = cityButton.textContent;
+      fetchWeather();
+      fetchForecast();
+    })
   });
 }
