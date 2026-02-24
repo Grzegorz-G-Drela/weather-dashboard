@@ -19,4 +19,27 @@ app.get('/weather', async (req, res) => {
     res.json(data);
 });
 
+app.get('/forecast', async (req, res) => {
+    const city = req.query.city;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.API_KEY}&units=metric`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    res.json(data);
+});
+
+app.get('/geocode', async(req, res) => {
+    const city = req.query.city;
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.API_KEY}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    res.json(data);
+});
+
+
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
