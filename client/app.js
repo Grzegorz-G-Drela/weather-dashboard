@@ -118,7 +118,14 @@ function renderFavourites () {
   fiveMostSearched.forEach(item => {
     const cityButton = document.createElement('button');
     const cityName = item.city;
-    cityButton.textContent = cityName.slice(0, 1).toUpperCase() + cityName.slice(1).toLowerCase();
+    
+    splitName = cityName.split(' ');
+    const capitalisedWords = splitName.map(word => {
+      const capitalised = word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+      return capitalised;
+    })
+    cityButton.textContent = capitalisedWords.join(' ');
+
     cityButton.classList.add('city-buttons');
     favCities.appendChild(cityButton);
     cityButton.addEventListener('click', () => {
