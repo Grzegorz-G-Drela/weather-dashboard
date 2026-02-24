@@ -26,7 +26,7 @@ cityInput.value = '';
 // it makes sure the city name exists in API database, than saves it in localStorage to display favourites 
 
 function fetchWeather(){
-  const input = cityInput.value;
+  const input = cityInput.value.toLowerCase();
 
   fetch(`http://localhost:3000/weather?city=${input}`)
   .then(response => response.json())
@@ -59,6 +59,7 @@ function fetchWeather(){
 
       console.log(searches);
       localStorage.setItem('searches', JSON.stringify(searches));
+
 
       renderFavourites();
     }
