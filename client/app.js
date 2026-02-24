@@ -115,9 +115,11 @@ function renderFavourites () {
   const sorted = searches.sort((a, b) => b.count - a.count);
   const fiveMostSearched = sorted.slice(0, 5);
   favCities.replaceChildren();
-  fiveMostSearched.forEach(city => {
+  fiveMostSearched.forEach(item => {
     const cityButton = document.createElement('button');
-    cityButton.textContent = city.city;
+    const cityName = item.city;
+    cityButton.textContent = cityName.slice(0, 1).toUpperCase() + cityName.slice(1).toLowerCase();
+    cityButton.classList.add('city-buttons');
     favCities.appendChild(cityButton);
     cityButton.addEventListener('click', () => {
       cityInput.value = cityButton.textContent;

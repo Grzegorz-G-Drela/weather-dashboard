@@ -32,17 +32,6 @@ body {
     justify-content: center;
 }
 
-#searchbar {
-    display: flex;
-    flex-direction: column;
-}
-
-#searchbar-bottom {
-    display: flex;
-    justify-content: center;
-    padding-top: 5px;
-}
-
 .error-div {
     font-size: 10px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -103,4 +92,12 @@ body {
     border-radius: 10px;
     padding: 40px 15px;
     display: flex;
+}
+
+.city-buttons {
+    padding: 10px 20px;
+    margin-left: 5px;
+    border-radius: 15px;
+    border: 2px dotted #000;
+    
 }
