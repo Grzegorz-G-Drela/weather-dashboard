@@ -127,3 +127,23 @@ body {
     scale: 105%;
     transition: all .2s;
 }
+
+#autocomplete-list {
+    position: absolute;
+    list-style-type: none;
+    /* left: 8px; */
+    padding-top: 10px;
+    background-color: white;
+    border: 1px solid #000;
+    border-top: none;
+}
+
+#autocomplete-list > li {
+    padding: 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+#autocomplete-list > li:hover {
+    background-color: rgb(235, 234, 234);
+}

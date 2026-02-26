@@ -24,6 +24,11 @@ cityInput.addEventListener('keydown', function(event) {
   }
 });
 
+searchButton.addEventListener ('click', () => {
+  fetchWeather();
+  fetchForecast();
+});
+
 cityInput.addEventListener('input', () => {
   if(cityInput.value.length < 3) {
     autocompleteList.replaceChildren();
@@ -32,25 +37,13 @@ cityInput.addEventListener('input', () => {
   }
 })
 
-searchButton.addEventListener ('click', () => {
-  fetchWeather();
-  fetchForecast();
+document.addEventListener('click', (e) => {
+  if ((e.target !== cityInput) && (!autocompleteList.contains(e.target))) autocompleteList.replaceChildren();
 });
-
 
 /* ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------FETCH FUNCTIONS-------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-function fetchGeocode() {
-  const input = cityInput.value;
-  
-  fetch(`http://localhost:3000/geocode?city=${input}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  })
-}
 
 // CHECKS if city name exists in API database, than saves the entry in localStorage to later display 'most searched/fav'
 function fetchWeather(){
@@ -104,6 +97,24 @@ function fetchForecast() {
     console.log(daily);
     daily.forEach((day) => displayForecast(day));
   });
+}
+
+function fetchGeocode() {
+  const input = cityInput.value;
+  
+  fetch(`http://localhost:3000/geocode?city=${input}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    autocompleteList.replaceChildren();
+    data.forEach(item => {
+      const city = document.createElement('li');
+
+      city.textContent = `${item.name}, ${item.state}, ${item.country}`;
+
+      autocompleteList.append(city);
+    })
+  })
 }
 
 
