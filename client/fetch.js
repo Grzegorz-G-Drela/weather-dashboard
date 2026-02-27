@@ -67,13 +67,14 @@ function fetchGeocode() {
       city.textContent = `${item.name}, ${item.state}, ${item.country}`;
       city.dataset.lat = item.lat;
       city.dataset.lon = item.lon;
+      city.dataset.name = item.name;
 
       autocompleteList.append(city);
     })
   })
 }
 
-function fetchByCoordinates(lat, lon) {
+function fetchByCoordinates(lat, lon, name) {
 
   fetch(`http://localhost:3000/coordinates?lat=${lat}&lon=${lon}`)
   .then(response => response.json())
@@ -86,14 +87,14 @@ function fetchByCoordinates(lat, lon) {
     const icon = document.querySelector ('#current-weather > .icon');
 
     errorDiv.textContent = '';
-    cityName.textContent = data.name;
+    cityName.textContent = name;
     temperature.textContent = Math.round(data.main.temp) + '\u2103';
     windSpeed.textContent = data.wind.speed;
     icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
     let searches = JSON.parse(localStorage.getItem('searches'));
     searches = searches || [];
-    const cityExists = searches.find(item => item.city === input); 
+    const cityExists = searches.find(item => item.city === name); 
     
     cityExists ? cityExists.count ++ : searches.push({city: input, count: 1});
 

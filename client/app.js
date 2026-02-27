@@ -12,10 +12,6 @@ fetchForecast();
 cityInput.value = '';
 
 
-/*###############################################
-################ EVENT LISTENERS ################
-###############################################*/
-
 cityInput.addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
     fetchWeather();
@@ -47,18 +43,5 @@ cityInput.addEventListener('click', () => {
 
 autocompleteList.addEventListener('click', (e) => {
   console.log(e.target.dataset.lat + " " + e.target.dataset.lon);
-  fetchByCoordinates(e.target.dataset.lat, e.target.dataset.lon);
+  fetchByCoordinates(e.target.dataset.lat, e.target.dataset.lon, e.target.dataset.name);
 });
-
-/*###############################################
-################ FETCH FUNCTIONS ################
-###############################################*/
-
-
-
-/*###############################################
-################## FUNCTIONS ####################
-###############################################*/
-
-
-
