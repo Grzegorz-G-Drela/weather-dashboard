@@ -6,7 +6,6 @@ function fetchWeather() {
     .then(data => {
 
       if (data.cod === '404') {
-        console.log('are we clicking?')
         errorDiv.textContent = 'Wrong city name.';
         return;
 
@@ -36,7 +35,6 @@ function fetchForecast() {
       if (data.cod === '404') return;
 
       const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
-      console.log(daily);
       renderForecast(daily);
     });
 }
@@ -47,7 +45,6 @@ function fetchGeocode() {
   fetch(`http://localhost:3000/geocode?city=${input}`)
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       autocompleteList.replaceChildren();
       data.forEach(item => {
         const city = document.createElement('li');
@@ -62,9 +59,18 @@ function fetchGeocode() {
     })
 }
 
+// TODO: refactor to Promise.all
 function fetchByCoordinates(lat, lon, name) {
 
-  fetch(`http://localhost:3000/coordinates?lat=${lat}&lon=${lon}`)
+  fetch(`http://localhost:3000/forecast/coordinates?lat=${lat}&lon=${lon}`)
+    .then(response => response.json())
+    .then(data => {
+
+      const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
+      renderForecast(daily);
+    })
+
+  fetch(`http://localhost:3000/weather/coordinates?lat=${lat}&lon=${lon}`)
     .then(response => response.json())
     .then(data => {
       renderWeather(data, name);
@@ -73,7 +79,7 @@ function fetchByCoordinates(lat, lon, name) {
       searches = searches || [];
       const cityExists = searches.find(item => item.city === name);
 
-      cityExists ? cityExists.count++ : searches.push({ city: input, count: 1 });
+      cityExists ? cityExists.count++ : searches.push({ city: name, count: 1 });
 
       localStorage.setItem('searches', JSON.stringify(searches));
       renderFavourites();
