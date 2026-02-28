@@ -1,104 +1,86 @@
-
-// CHECKS if city name exists in API database, than saves the entry in localStorage to later display 'most searched/fav'
-function fetchWeather(){
+function fetchWeather() {
   const input = cityInput.value.toLowerCase();
 
   fetch(`http://localhost:3000/weather?city=${input}`)
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
 
-    if (data.cod === '404') {
-      console.log('are we clicking?')
-      errorDiv.textContent = 'Wrong city name.';
-      return;
+      if (data.cod === '404') {
+        console.log('are we clicking?')
+        errorDiv.textContent = 'Wrong city name.';
+        return;
 
-    } else {
-      const cityName = document.querySelector('#current-weather > .city-name');
-      const temperature = document.querySelector('#current-weather > .temperature');
-      const windSpeed = document.querySelector('#current-weather > .wind-speed');
-      const icon = document.querySelector ('#current-weather > .icon');
+      } else {
+        renderWeather(data);
 
-      errorDiv.textContent = '';
-      cityName.textContent = data.name;
-      temperature.textContent = Math.round(data.main.temp) + '\u2103';
-      windSpeed.textContent = data.wind.speed;
-      icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+        let searches = JSON.parse(localStorage.getItem('searches'));
+        searches = searches || [];
+        const cityExists = searches.find(item => item.city === input);
 
-      let searches = JSON.parse(localStorage.getItem('searches'));
-      searches = searches || [];
-      const cityExists = searches.find(item => item.city === input); 
-      
-      cityExists ? cityExists.count ++ : searches.push({city: input, count: 1});
+        // checks if city exists in API base, and if was searched before, creates 5 most searched list
+        cityExists ? cityExists.count++ : searches.push({ city: input, count: 1 });
 
-      localStorage.setItem('searches', JSON.stringify(searches));
-      renderFavourites();
-    }
-  });
+        localStorage.setItem('searches', JSON.stringify(searches));
+        renderFavourites();
+      }
+    });
 }
 
-// API automatically returns 40 entries for 5 days (8 per day)
-// we filter to one entry per day (12:00 noon), then we transfer to display
+// API returns 40 entries for 5 days - we filter to 5 - 1 per day, 12:00 mid-day
 function fetchForecast() {
   const input = cityInput.value;
 
   fetch(`http://localhost:3000/forecast?city=${input}`)
-  .then(response => response.json())
-  .then(data => {
-    fiveDayForecast.replaceChildren();
-    if (data.cod === '404') return; 
- 
-    const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
-    console.log(daily);
-    daily.forEach((day) => displayForecast(day));
-  });
+    .then(response => response.json())
+    .then(data => {
+      if (data.cod === '404') return;
+
+      const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
+      console.log(daily);
+      renderForecast(daily);
+    });
 }
 
 function fetchGeocode() {
   const input = cityInput.value;
-  
+
   fetch(`http://localhost:3000/geocode?city=${input}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    autocompleteList.replaceChildren();
-    data.forEach(item => {
-      const city = document.createElement('li');
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      autocompleteList.replaceChildren();
+      data.forEach(item => {
+        const city = document.createElement('li');
 
-      city.textContent = `${item.name}, ${item.state}, ${item.country}`;
-      city.dataset.lat = item.lat;
-      city.dataset.lon = item.lon;
-      city.dataset.name = item.name;
+        city.textContent = `${item.name}, ${item.state}, ${item.country}`;
+        city.dataset.lat = item.lat;
+        city.dataset.lon = item.lon;
+        city.dataset.name = item.name;
 
-      autocompleteList.append(city);
+        autocompleteList.append(city);
+      })
     })
-  })
 }
 
 function fetchByCoordinates(lat, lon, name) {
 
   fetch(`http://localhost:3000/coordinates?lat=${lat}&lon=${lon}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    
-    const cityName = document.querySelector('#current-weather > .city-name');
-    const temperature = document.querySelector('#current-weather > .temperature');
-    const windSpeed = document.querySelector('#current-weather > .wind-speed');
-    const icon = document.querySelector ('#current-weather > .icon');
+    .then(response => response.json())
+    .then(data => {
+      renderWeather(data, name);
 
-    errorDiv.textContent = '';
-    cityName.textContent = name;
-    temperature.textContent = Math.round(data.main.temp) + '\u2103';
-    windSpeed.textContent = data.wind.speed;
-    icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+      let searches = JSON.parse(localStorage.getItem('searches'));
+      searches = searches || [];
+      const cityExists = searches.find(item => item.city === name);
 
-    let searches = JSON.parse(localStorage.getItem('searches'));
-    searches = searches || [];
-    const cityExists = searches.find(item => item.city === name); 
-    
-    cityExists ? cityExists.count ++ : searches.push({city: input, count: 1});
+      cityExists ? cityExists.count++ : searches.push({ city: input, count: 1 });
 
-    localStorage.setItem('searches', JSON.stringify(searches));
-    renderFavourites();
-  })
+      localStorage.setItem('searches', JSON.stringify(searches));
+      renderFavourites();
+    })
 }
+
+
+
+
+

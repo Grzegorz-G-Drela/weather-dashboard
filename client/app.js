@@ -1,18 +1,14 @@
 
 const searchButton = document.querySelector('#search-button');
 const cityInput = document.querySelector('#city-input');
-const errorDiv = document.querySelector('#searchbar-bottom > .error-div');
+const errorDiv = document.querySelector('#input-wrapper > .error-div');
 const favCities = document.querySelector('#fav-cities');
+const currentWeather = document.querySelector('#current-weather');
 const fiveDayForecast = document.querySelector('#five-day-forecast');
 const autocompleteList = document.querySelector('#autocomplete-list');
 
-cityInput.value = 'Wellington';
-fetchWeather();
-fetchForecast();
-cityInput.value = '';
 
-
-cityInput.addEventListener('keydown', function(event) {
+cityInput.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
     fetchWeather();
     fetchForecast();
@@ -20,13 +16,13 @@ cityInput.addEventListener('keydown', function(event) {
   }
 });
 
-searchButton.addEventListener ('click', () => {
+searchButton.addEventListener('click', () => {
   fetchWeather();
   fetchForecast();
 });
 
 cityInput.addEventListener('input', () => {
-  if(cityInput.value.length < 3) {
+  if (cityInput.value.length < 3) {
     autocompleteList.replaceChildren();
   } else {
     fetchGeocode();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,41 +10,29 @@
     <script src="./fetch.js" defer></script>
     <script src="./app.js" defer></script>
 </head>
+
 <body>
-    
-<div id="top">
-    <div id="searchbar">
-        <div id="searchbar-top">
+
+    <div id="top">
+        <div id="searchbar">
             <div id="input-wrapper">
                 <input type="text" id="city-input" autocomplete="off">
+                <div class="error-div"></div>
                 <ul id="autocomplete-list"></ul>
             </div>
             <button id="search-button">SEARCH</button>
         </div>
-        <div id="searchbar-bottom">
-            <div class="error-div">asda</div>
-        </div>
-    </div>
-    
-    <div id="fav-cities">XXXXXXXXXX</div>
-</div>
 
-<div id="bottom">
-    <div id="weather">
-    
-        <div id="current-weather" class="weather">
-            <h3 class="city-name"></h3>
-            <h1 class="temperature"></h1>
-            <p class="wind-speed"></p>
-            <img src="" alt="weather-icon" class="icon">
-        </div>
-    
-        <div id="five-day-forecast">
-            <!-- card creation logic (inside the loop) -->
-        </div>
-    
+        <div id="fav-cities"></div>
     </div>
-</div>
+
+    <div id="bottom">
+        <div id="weather">
+            <div id="current-weather" class="weather"></div>
+            <div id="five-day-forecast"></div>
+        </div>
+    </div>
 
 </body>
+
 </html>
