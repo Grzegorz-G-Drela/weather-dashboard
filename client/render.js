@@ -82,3 +82,11 @@ function renderError(message) {
   para.textContent = message;
   currentWeather.append(para);
 }
+
+function renderLoading() {
+  currentWeather.replaceChildren();
+  fiveDayForecast.replaceChildren();
+  const para = document.createElement('p');
+  para.textContent = 'Loading...';
+  currentWeather.append(para);
+}
