@@ -30,7 +30,12 @@ function fetchForecast() {
   const input = cityInput.value;
 
   fetch(`http://localhost:3000/forecast?city=${input}`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+      return response.json();
+    })
     .then(data => {
       if (data.cod === '404') return;
 
