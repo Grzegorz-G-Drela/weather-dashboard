@@ -6,7 +6,6 @@ const favCities = document.querySelector('#fav-cities');
 const currentWeather = document.querySelector('#current-weather');
 const fiveDayForecast = document.querySelector('#five-day-forecast');
 const autocompleteList = document.querySelector('#autocomplete-list');
-const weatherMain = document.querySelector('#weather');
 
 renderFavourites();
 

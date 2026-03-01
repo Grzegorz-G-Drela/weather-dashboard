@@ -76,8 +76,9 @@ function renderFavourites() {
 }
 
 function renderError(message) {
-  weatherMain.replaceChildren();
+  currentWeather.replaceChildren();
+  fiveDayForecast.replaceChildren();
   const para = document.createElement('p');
   para.textContent = message;
-  weatherMain.append(para);
+  currentWeather.append(para);
 }

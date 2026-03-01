@@ -49,7 +49,10 @@ function fetchForecast() {
 
       const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
       renderForecast(daily);
-    });
+    })
+    .catch(error =>{
+      renderError(error.message);
+    })
 }
 
 function fetchGeocode() {
@@ -75,6 +78,9 @@ function fetchGeocode() {
         autocompleteList.append(city);
       })
     })
+    .catch(error => {
+      renderError(error.message);
+    })
 }
 
 // TODO: refactor to Promise.all
@@ -92,9 +98,17 @@ function fetchByCoordinates(lat, lon, name) {
       const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
       renderForecast(daily);
     })
+    .catch(error => {
+      renderError(error.message);
+    })
 
   fetch(`http://localhost:3000/weather/coordinates?lat=${lat}&lon=${lon}`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error ('Request failed');
+      }
+      return response.json();
+    })
     .then(data => {
       renderWeather(data, name);
 
@@ -106,6 +120,9 @@ function fetchByCoordinates(lat, lon, name) {
 
       localStorage.setItem('searches', JSON.stringify(searches));
       renderFavourites();
+    })
+    .catch(error => {
+      renderError(error.message);
     })
 }
 
