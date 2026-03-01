@@ -48,7 +48,6 @@ function fetchForecast() {
 
 function fetchGeocode() {
   const input = cityInput.value;
-  renderLoading();
 
   fetch(`http://localhost:3000/geocode?city=${input}`)
     .then(response => {
