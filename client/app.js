@@ -7,6 +7,7 @@ const currentWeather = document.querySelector('#current-weather');
 const fiveDayForecast = document.querySelector('#five-day-forecast');
 const autocompleteList = document.querySelector('#autocomplete-list');
 
+renderFavourites();
 
 cityInput.addEventListener('keydown', function (event) {
   if (event.key === 'Enter') {
