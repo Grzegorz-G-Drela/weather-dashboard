@@ -74,3 +74,10 @@ function renderFavourites() {
     })
   });
 }
+
+function renderError(message) {
+  weatherMain.replaceChildren();
+  const para = document.createElement('p');
+  para.textContent = message;
+  weatherMain.append(para);
+}
