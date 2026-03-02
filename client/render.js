@@ -1,11 +1,13 @@
 function renderWeather(city, name) {
   currentWeather.replaceChildren();
 
+  const textDiv = document.createElement('div');
   const cityName = document.createElement('h3');
   const temperature = document.createElement('h1');
   const windSpeed = document.createElement('p');
   const icon = document.createElement('img');
 
+  textDiv.classList.add('text-div');
   cityName.classList.add('city-name');
   temperature.classList.add('temperature');
   windSpeed.classList.add('wind-speed');
@@ -18,7 +20,8 @@ function renderWeather(city, name) {
   windSpeed.textContent = city.wind.speed;
   icon.src = `https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png`;
 
-  currentWeather.append(cityName, temperature, windSpeed, icon);
+  textDiv.append(cityName, temperature, windSpeed);
+  currentWeather.append(textDiv, icon);
 }
 
 function renderForecast(daily) {
@@ -26,12 +29,14 @@ function renderForecast(daily) {
 
   daily.forEach(day => {
     const div = document.createElement('div');
+    const textDiv = document.createElement('div');
     const date = document.createElement('h3');
     const temperature = document.createElement('h1');
     const windSpeed = document.createElement('p');
     const icon = document.createElement('img');
     
     div.classList.add('weather');
+    textDiv.classList.add('text-div');
     date.classList.add('city-name');
     temperature.classList.add('temperature');
     windSpeed.classList.add('wind-speed');
@@ -43,7 +48,8 @@ function renderForecast(daily) {
     icon.src = `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`;
     icon.alt = 'the weather icon';
 
-    div.append(date, temperature, windSpeed, icon);
+    textDiv.append(date, temperature, windSpeed);
+    div.append(textDiv, icon);
     fiveDayForecast.append(div);
   });
 }
