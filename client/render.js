@@ -17,7 +17,7 @@ function renderWeather(city, name) {
   errorDiv.textContent = '';
   cityName.textContent = name ? name : city.name;
   temperature.textContent = Math.round(city.main.temp) + '\u2103';
-  windSpeed.textContent = city.wind.speed;
+  windSpeed.textContent = city.wind.speed + ' m/s';
   icon.src = `https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png`;
 
   textDiv.append(cityName, temperature, windSpeed);
@@ -44,7 +44,7 @@ function renderForecast(daily) {
     
     date.textContent = day.dt_txt.slice(0, 10);
     temperature.textContent = Math.round(day.main.temp) + '\u2103';
-    windSpeed.textContent = day.wind.speed;
+    windSpeed.textContent = day.wind.speed + ' m/s';
     icon.src = `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`;
     icon.alt = 'the weather icon';
 
