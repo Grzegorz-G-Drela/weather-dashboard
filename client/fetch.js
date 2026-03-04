@@ -74,48 +74,35 @@ function fetchGeocode() {
     })
 }
 
-// TODO: refactor to Promise.all
-function fetchByCoordinates(lat, lon, name) {
+async function fetchByCoordinates(lat, lon, name) {
   renderLoading();
 
-  fetch(`http://localhost:3000/forecast/coordinates?lat=${lat}&lon=${lon}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error ('Request failed');
-      }
-      return response.json();
-    })
-    .then(data => {
+  try{
+    const [weatherResponse, forecastResponse] = await Promise.all([
+      fetch(`http://localhost:3000/weather/coordinates?lat=${lat}&lon=${lon}`),
+      fetch(`http://localhost:3000/forecast/coordinates?lat=${lat}&lon=${lon}`)
+    ]);
+    if (!weatherResponse.ok) throw new Error ('Request failed');
+    if (!forecastResponse.ok) throw new Error ('Request failed');
+    const weatherData = await weatherResponse.json();
+    const forecastData = await forecastResponse.json();
 
-      const daily = data.list.filter((element) => element['dt_txt'].includes('12:00:00'));
-      renderForecast(daily);
-    })
-    .catch(error => {
-      renderError(error.message);
-    })
-
-  fetch(`http://localhost:3000/weather/coordinates?lat=${lat}&lon=${lon}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error ('Request failed');
-      }
-      return response.json();
-    })
-    .then(data => {
-      renderWeather(data, name);
-
-      let searches = JSON.parse(localStorage.getItem('searches'));
-      searches = searches || [];
-      const cityExists = searches.find(item => item.city === name);
-
-      cityExists ? cityExists.count++ : searches.push({ city: name, count: 1 });
-
-      localStorage.setItem('searches', JSON.stringify(searches));
-      renderFavourites();
-    })
-    .catch(error => {
-      renderError(error.message);
-    })
+    const daily = forecastData.list.filter((element) => element['dt_txt'].includes('12:00:00'));
+    renderForecast(daily);
+    
+    renderWeather(weatherData, name);
+    
+    let searches = JSON.parse(localStorage.getItem('searches'));
+    searches = searches || [];
+    const cityExists = searches.find(item => item.city === name);
+    
+    cityExists ? cityExists.count++ : searches.push({ city: name, count: 1 });
+    
+    localStorage.setItem('searches', JSON.stringify(searches));
+    renderFavourites();
+  } catch (error) {
+    renderError(error.message);
+  }
 }
 
 
