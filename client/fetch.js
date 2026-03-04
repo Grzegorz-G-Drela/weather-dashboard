@@ -46,6 +46,7 @@ function fetchForecast() {
     })
 }
 
+// TODO: obscure place names return no results via text search — only resolvable via coordinates
 function fetchGeocode() {
   const input = cityInput.value;
 
@@ -87,10 +88,10 @@ async function fetchByCoordinates(lat, lon, name) {
     const weatherData = await weatherResponse.json();
     const forecastData = await forecastResponse.json();
 
+    renderWeather(weatherData, name);
+
     const daily = forecastData.list.filter((element) => element['dt_txt'].includes('12:00:00'));
     renderForecast(daily);
-    
-    renderWeather(weatherData, name);
     
     let searches = JSON.parse(localStorage.getItem('searches'));
     searches = searches || [];
