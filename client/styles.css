@@ -138,7 +138,9 @@ body {
     cursor: pointer;
 }
 
-#autocomplete-list>li:hover {
+/* active is a class */
+#autocomplete-list>li:hover,
+#autocomplete-list>li.active {
     background-color: rgb(235, 234, 234);
 }
 

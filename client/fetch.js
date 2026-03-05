@@ -58,6 +58,7 @@ function fetchGeocode() {
       return response.json();
     })
     .then(data => {
+      activeIndex = -1;
       autocompleteList.replaceChildren();
       data.forEach(item => {
         const city = document.createElement('li');

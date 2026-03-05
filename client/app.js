@@ -9,11 +9,28 @@ const autocompleteList = document.querySelector('#autocomplete-list');
 
 renderFavourites();
 
+let activeIndex = -1;
+
 cityInput.addEventListener('keydown', function (event) {
-  if (event.key === 'Enter') {
-    fetchWeather();
-    fetchForecast();
-    cityInput.value = '';
+  const liAll = document.querySelectorAll('#autocomplete-list>li');
+  switch (event.key) {
+    case 'Enter':
+      fetchWeather();
+      fetchForecast();
+      cityInput.value = '';
+      break;
+    case 'ArrowDown':
+      if (activeIndex < liAll.length -1) activeIndex++;
+      liAll.forEach(li => li.classList.remove('active'));
+      liAll[activeIndex].classList.add('active');
+      break;
+    case 'ArrowUp':
+      if (activeIndex > 0) activeIndex--;
+      liAll.forEach(li => li.classList.remove('active'));
+      liAll[activeIndex].classList.add('active');
+      break;
+    default:
+      break;
   }
 });
 
