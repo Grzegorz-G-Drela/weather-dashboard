@@ -20,28 +20,30 @@ cityInput.addEventListener('keydown', function (event) {
         fetchByCoordinates(activeLi.dataset.lat, activeLi.dataset.lon, activeLi.dataset.name);
         autocompleteList.replaceChildren();
         cityInput.value = '';
-        break;
       } else {
         fetchWeather();
         fetchForecast();
         cityInput.value = '';
       } break;
     case 'ArrowDown':
-      event.preventDefault();
-      if (liAll.length === 0 && cityInput.value) {
-        fetchGeocode();
-        break;
-      } else {
-        if (activeIndex < liAll.length - 1) activeIndex++;
-        liAll.forEach(li => li.classList.remove('active'));
-        liAll[activeIndex].classList.add('active');
+      if (liAll.length > 0) {
+        event.preventDefault();
+        if (liAll.length === 0 && cityInput.value) {
+          fetchGeocode();
+        } else {
+          if (activeIndex < liAll.length - 1) activeIndex++;
+          liAll.forEach(li => li.classList.remove('active'));
+          liAll[activeIndex].classList.add('active');
+        }
       }
       break;
     case 'ArrowUp':
-      event.preventDefault();
-      if (activeIndex > 0) activeIndex--;
-      liAll.forEach(li => li.classList.remove('active'));
-      liAll[activeIndex].classList.add('active');
+      if (liAll.length > 0) {
+        event.preventDefault();
+        if (activeIndex > 0) activeIndex--;
+        liAll.forEach(li => li.classList.remove('active'));
+        liAll[activeIndex].classList.add('active');
+      }
       break;
     case 'Escape':
       autocompleteList.replaceChildren();
