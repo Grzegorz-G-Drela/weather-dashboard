@@ -36,6 +36,9 @@ cityInput.addEventListener('keydown', function (event) {
       liAll.forEach(li => li.classList.remove('active'));
       liAll[activeIndex].classList.add('active');
       break;
+    case 'Escape':
+      autocompleteList.replaceChildren();
+      activeIndex = -1;
     default:
       break;
   }
