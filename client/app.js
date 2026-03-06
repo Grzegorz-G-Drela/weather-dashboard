@@ -26,23 +26,23 @@ cityInput.addEventListener('keydown', function (event) {
         cityInput.value = '';
       } break;
     case 'ArrowDown':
-      if (liAll.length > 0) {
-        event.preventDefault();
-        if (liAll.length === 0 && cityInput.value) {
-          fetchGeocode();
-        } else {
-          if (activeIndex < liAll.length - 1) activeIndex++;
-          liAll.forEach(li => li.classList.remove('active'));
-          liAll[activeIndex].classList.add('active');
-        }
+      event.preventDefault();
+      if (liAll.length === 0 && cityInput.value) {
+        fetchGeocode();
+      } else if (liAll.length > 0) {
+        if (activeIndex < liAll.length - 1) activeIndex++;
+        liAll.forEach(li => li.classList.remove('active'));
+        liAll[activeIndex].classList.add('active');
       }
       break;
     case 'ArrowUp':
-      if (liAll.length > 0) {
-        event.preventDefault();
-        if (activeIndex > 0) activeIndex--;
-        liAll.forEach(li => li.classList.remove('active'));
-        liAll[activeIndex].classList.add('active');
+      if (activeIndex > -1) {
+        if (liAll.length > 0) {
+          event.preventDefault();
+          if (activeIndex > 0) activeIndex--;
+          liAll.forEach(li => li.classList.remove('active'));
+          liAll[activeIndex].classList.add('active');
+        }
       }
       break;
     case 'Escape':
@@ -75,6 +75,5 @@ cityInput.addEventListener('click', () => {
 });
 
 autocompleteList.addEventListener('click', (e) => {
-  console.log(e.target.dataset.lat + " " + e.target.dataset.lon);
   fetchByCoordinates(e.target.dataset.lat, e.target.dataset.lon, e.target.dataset.name);
 });
