@@ -54,6 +54,7 @@ function renderForecast(daily) {
   });
 }
 
+// TODO: change fetchWeatcher and fetchForecast to call by coordinates, so the obscure places work in favourites as intended
 function renderFavourites() {
   let searches = JSON.parse(localStorage.getItem('searches'));
   searches = searches || [];
@@ -64,7 +65,7 @@ function renderFavourites() {
     const cityButton = document.createElement('button');
     const cityName = item.city;
 
-    splitName = cityName.split(' ');
+    const splitName = cityName.split(' ');
     const capitalisedWords = splitName.map(word => {
       const capitalised = word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
       return capitalised;

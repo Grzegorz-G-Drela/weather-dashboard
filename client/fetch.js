@@ -12,6 +12,7 @@ function fetchWeather() {
     .then(data => {
       renderWeather(data);
 
+      // TODO: extract local storage logic into a fn updateSearchHistory() to avoid duplication (fetchByCoordinates, lines 98-104)
       let searches = JSON.parse(localStorage.getItem('searches'));
       searches = searches || [];
       const cityExists = searches.find(item => item.city === input);
@@ -25,7 +26,8 @@ function fetchWeather() {
     })
 }
 
-// API returns 40 entries for 5 days - we filter to 5 - 1 per day, 12:00 mid-day
+// API returns 40 entries
+// filter it to 1 per day at 12:00am
 function fetchForecast() {
   const input = cityInput.value;
   renderLoading();
@@ -99,7 +101,6 @@ async function fetchByCoordinates(lat, lon, name) {
     const cityExists = searches.find(item => item.city === name);
     
     cityExists ? cityExists.count++ : searches.push({ city: name, count: 1 });
-    
     localStorage.setItem('searches', JSON.stringify(searches));
     renderFavourites();
   } catch (error) {
