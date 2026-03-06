@@ -27,6 +27,7 @@ cityInput.addEventListener('keydown', function (event) {
         cityInput.value = '';
       } break;
     case 'ArrowDown':
+      event.preventDefault();
       if (liAll.length === 0 && cityInput.value) {
         fetchGeocode();
         break;
@@ -37,6 +38,7 @@ cityInput.addEventListener('keydown', function (event) {
       }
       break;
     case 'ArrowUp':
+      event.preventDefault();
       if (activeIndex > 0) activeIndex--;
       liAll.forEach(li => li.classList.remove('active'));
       liAll[activeIndex].classList.add('active');
