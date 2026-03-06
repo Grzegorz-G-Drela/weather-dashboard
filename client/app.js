@@ -15,12 +15,19 @@ cityInput.addEventListener('keydown', function (event) {
   const liAll = document.querySelectorAll('#autocomplete-list>li');
   switch (event.key) {
     case 'Enter':
-      fetchWeather();
-      fetchForecast();
-      cityInput.value = '';
-      break;
+      if (activeIndex > -1) {
+        const activeLi = liAll[activeIndex];
+        fetchByCoordinates(activeLi.dataset.lat, activeLi.dataset.lon, activeLi.dataset.name);
+        autocompleteList.replaceChildren();
+        cityInput.value = '';
+        break;
+      } else {
+        fetchWeather();
+        fetchForecast();
+        cityInput.value = '';
+      } break;
     case 'ArrowDown':
-      if (activeIndex < liAll.length -1) activeIndex++;
+      if (activeIndex < liAll.length - 1) activeIndex++;
       liAll.forEach(li => li.classList.remove('active'));
       liAll[activeIndex].classList.add('active');
       break;
