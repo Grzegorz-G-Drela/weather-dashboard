@@ -2,7 +2,7 @@ function fetchWeather() {
   const input = cityInput.value.toLowerCase();
   renderLoading();
 
-  fetch(`http://localhost:3000/weather?city=${input}`)
+  fetch(`/weather?city=${input}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Request failed');
@@ -32,7 +32,7 @@ function fetchForecast() {
   const input = cityInput.value;
   renderLoading();
 
-  fetch(`http://localhost:3000/forecast?city=${input}`)
+  fetch(`/forecast?city=${input}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Request failed');
@@ -52,7 +52,7 @@ function fetchForecast() {
 function fetchGeocode() {
   const input = cityInput.value;
 
-  fetch(`http://localhost:3000/geocode?city=${input}`)
+  fetch(`/geocode?city=${input}`)
     .then(response => {
       if (!response.ok) {
         throw new Error ('Request failed');
@@ -83,8 +83,8 @@ async function fetchByCoordinates(lat, lon, name) {
 
   try{
     const [weatherResponse, forecastResponse] = await Promise.all([
-      fetch(`http://localhost:3000/weather/coordinates?lat=${lat}&lon=${lon}`),
-      fetch(`http://localhost:3000/forecast/coordinates?lat=${lat}&lon=${lon}`)
+      fetch(`/weather/coordinates?lat=${lat}&lon=${lon}`),
+      fetch(`/forecast/coordinates?lat=${lat}&lon=${lon}`)
     ]);
     if (!weatherResponse.ok) throw new Error ('Request failed');
     if (!forecastResponse.ok) throw new Error ('Request failed');
