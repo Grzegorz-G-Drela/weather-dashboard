@@ -7,6 +7,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(express.static('public'));
 const PORT = 3000;
 
 // TODO (later): try retry idea when API call fails (response.ok = false) - advanced pattern
