@@ -1,5 +1,6 @@
 ## Weather Dashboard
 A weather app built with Node.js/Express backend and Vanilla JS frontend.
+**Live demo:** https://weather-dashboard-pi-six.vercel.app/
 
 ## Features
 - Search any city by name to get current weather and a 5-day forecast
