@@ -2,12 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(express.static('public'));
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.join(__dirname, 'public')));
 const PORT = 3000;
 
 // TODO (later): try retry idea when API call fails (response.ok = false) - advanced pattern
